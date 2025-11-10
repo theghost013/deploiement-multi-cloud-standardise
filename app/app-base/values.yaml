@@ -6,5 +6,5 @@ image:
   pullPolicy: IfNotPresent
 
 service:
-  type: LoadBalancer # Permet d'obtenir une IP publique sur AWS et GCP
+  type: LoadBalancer
   port: 80

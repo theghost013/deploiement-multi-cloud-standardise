@@ -13,26 +13,25 @@ spec:
   compositeTypeRef:
     apiVersion: devops.com/v1alpha1
     kind: XManagedCluster
-    
+
   resources:
-    # --- 1. EKS CLUSTER (Control Plane) ---
     - name: eks-cluster-main
       base:
-        apiVersion: eks.aws.upbound.io/v1beta1 
+        apiVersion: eks.aws.upbound.io/v1beta1
         kind: Cluster
         spec:
           providerConfigRef:
-            name: aws-primary-config 
+            name: aws-primary-config
           forProvider:
-            region: eu-west-3 
-            version: "1.32" # EKS ne supporte pas encore 1.32, nous revenons à la version stable testée
-            roleArn: "" # Sera injecté depuis EnvironmentConfig (clusterRoleArnRef)
+            region: eu-west-3
+            version: "1.32"
+            roleArn: ""
             vpcConfig:
-              - subnetIds: [] # Patché depuis le XR (spec.subnetIds)
+              - subnetIds: []
           writeConnectionSecretToRef:
-            name: "" # Patché depuis le XR (spec.id)
+            name: ""
             namespace: crossplane-system
-            
+
       patches:
         - fromFieldPath: spec.id
           toFieldPath: metadata.name
@@ -46,8 +45,6 @@ spec:
         - fromFieldPath: spec.subnetIds
           toFieldPath: spec.forProvider.vpcConfig[0].subnetIds
 
-    # --- 2. EKS NODE GROUP (Workers) ---
-    # AJOUTÉ ICI pour que les pods Nginx puissent démarrer (corrige le statut Pending)
     - name: eks-nodegroup
       base:
         apiVersion: eks.aws.upbound.io/v1beta1
@@ -57,21 +54,18 @@ spec:
             name: aws-primary-config
           forProvider:
             region: eu-west-3
-            # nodeRoleArn injecté depuis EnvironmentConfig (nodegroupRoleArnRef)
             nodeRoleArn: ""
             scalingConfig:
-              - desiredSize: 2 # 2 nœuds de travail
+              - desiredSize: 2
                 maxSize: 3
                 minSize: 1
             instanceTypes:
-              - "t3.micro" # Type de machine
-            subnetIds: [] # Patché depuis le XR (spec.subnetIds)
+              - "t3.micro"
+            subnetIds: []
 
       patches:
-        # Lie le NodeGroup au Cluster (en utilisant l'ID/Nom du XR)
         - fromFieldPath: spec.id
           toFieldPath: spec.forProvider.clusterName
-        # Utilise les MÊMES subnets que le cluster
         - fromFieldPath: spec.subnetIds
           toFieldPath: spec.forProvider.subnetIds
         - type: FromEnvironmentFieldPath

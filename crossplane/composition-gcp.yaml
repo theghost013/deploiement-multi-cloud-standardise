@@ -11,18 +11,16 @@ spec:
   resources:
     - name: gke-cluster-main
       base:
-        # API Group corrigé pour les clusters GKE Upbound
         apiVersion: container.gcp.upbound.io/v1beta1 
         kind: Cluster
         spec:
           providerConfigRef:
-            name: gcp-primary-config # Référence à votre ProviderConfig
+            name: gcp-primary-config
           forProvider:
-            # project: optionnel, fourni par le ProviderConfig; on s'appuie dessus pour éviter les conflits
             location: europe-west1
             releaseChannel:
-              - channel: "REGULAR" # 
-            initialNodeCount: 1 # Minimum requis
+              - channel: "REGULAR"
+            initialNodeCount: 1
             nodeConfig:
               - diskType: pd-standard
             monitoringConfig:
@@ -39,5 +37,3 @@ spec:
           toFieldPath: spec.writeConnectionSecretToRef.name
         - fromFieldPath: spec.region
           toFieldPath: spec.forProvider.location
-        
-    # Removed explicit Secret resource; rely on writeConnectionSecretToRef written by the managed resource.

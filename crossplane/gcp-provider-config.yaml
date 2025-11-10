@@ -1,4 +1,3 @@
-# Fichier : crossplane/gcp-provider-config.yaml
 apiVersion: gcp.upbound.io/v1beta1
 kind: ProviderConfig
 metadata:
