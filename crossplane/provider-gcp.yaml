@@ -1,0 +1,7 @@
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-gcp-gke
+spec:
+  # Chemin Upbound pour le Provider GCP (version récente)
+  package: "xpkg.upbound.io/upbound/provider-gcp:v0.25.0"

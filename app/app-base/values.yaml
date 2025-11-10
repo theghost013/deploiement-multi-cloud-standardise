@@ -1,0 +1,10 @@
+replicaCount: 1
+
+image:
+  repository: nginx
+  tag: stable
+  pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer # Permet d'obtenir une IP publique sur AWS et GCP
+  port: 80

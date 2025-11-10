@@ -1,0 +1,6 @@
+aws-creds.txt
+gcp-sa-key.json
+azure-sp-creds.json
+kubeconfig-aws.yaml
+kubeconfig-gcp.yaml
+aws-role-source.conf

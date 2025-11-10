@@ -1,0 +1,15 @@
+apiVersion: apiextensions.crossplane.io/v1alpha1
+kind: EnvironmentConfig
+metadata:
+  name: aws-roles-env
+data:
+  clusterRoleArnRef:
+    secretRef:
+      namespace: crossplane-system
+      name: aws-roles-secret
+      key: cluster-role-arn
+  nodegroupRoleArnRef:
+    secretRef:
+      namespace: crossplane-system
+      name: aws-roles-secret
+      key: nodegroup-role-arn

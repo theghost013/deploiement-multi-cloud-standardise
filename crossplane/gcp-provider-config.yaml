@@ -1,0 +1,14 @@
+# Fichier : crossplane/gcp-provider-config.yaml
+apiVersion: gcp.upbound.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: gcp-primary-config
+spec:
+  projectID: white-ground-477519-h1
+      
+  credentials:
+    source: Secret
+    secretRef:
+      namespace: crossplane-system
+      name: gcp-creds 
+      key: key

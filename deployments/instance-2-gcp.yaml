@@ -1,0 +1,12 @@
+apiVersion: devops.com/v1alpha1
+kind: XManagedCluster 
+metadata:
+  name: instance-2-gcp # Nom neutre et descriptif
+  labels:
+    provider: gcp # Déclenche la Composition GCP
+spec:
+  id: cluster-instance-2-gcp
+  region: europe-west1
+  compositionSelector:
+    matchLabels:
+      provider: gcp

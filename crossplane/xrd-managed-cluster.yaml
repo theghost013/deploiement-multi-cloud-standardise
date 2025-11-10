@@ -1,0 +1,46 @@
+# Fichier : crossplane/xrd-managed-cluster.yaml
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xmanagedclusters.devops.com
+spec:
+  group: devops.com
+  names:
+    kind: XManagedCluster
+    plural: xmanagedclusters
+  versions:
+    - name: v1alpha1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Unique identifier for the cluster.
+                region: 
+                  type: string
+                  description: Cloud region where the cluster should be provisioned.
+                  default: "eu-west-3" 
+                roleArn:
+                  type: string
+                  description: IAM Role ARN used for cluster provisioning (EKS only). Optional for non-AWS providers.
+                subnetIds:
+                  type: array
+                  description: List of subnet IDs for cluster networking (EKS only). Optional for non-AWS providers.
+                  items:
+                    type: string
+              required:
+                - id
+            status:
+              type: object
+              properties:
+                kubeconfigSecretRef: 
+                  type: object
+                  properties:
+                    name:
+                      type: string

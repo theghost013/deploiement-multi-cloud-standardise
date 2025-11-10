@@ -1,0 +1,13 @@
+apiVersion: devops.com/v1alpha1
+kind: XManagedCluster 
+metadata:
+  name: instance-1-aws # Nom neutre et descriptif
+  labels:
+    provider: aws # Déclenche la Composition AWS
+spec:
+  id: cluster-instance-1-aws
+  region: eu-west-3
+  roleArn: "arn:aws:iam::651665396672:role/eks-cluster-role-crossplane"
+  subnetIds:
+    - "subnet-05086d4cc7e260578"
+    - "subnet-0b642fae63e524142"

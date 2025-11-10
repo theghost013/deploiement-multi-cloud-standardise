@@ -1,0 +1,8 @@
+# Fichier : crossplane/provider-aws.yaml
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-aws-eks
+spec:
+  # Changement de la version pour une version plus récente et disponible (ex: v0.42.0)
+  package: "xpkg.upbound.io/upbound/provider-aws-eks:v1.3.0"

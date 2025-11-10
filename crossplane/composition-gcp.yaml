@@ -1,0 +1,43 @@
+apiVersion: apiextensions.crossplane.io/v1 
+kind: Composition
+metadata:
+  name: xmanagedclusters-gcp
+  labels:
+    provider: gcp
+spec:
+  compositeTypeRef:
+    apiVersion: devops.com/v1alpha1
+    kind: XManagedCluster
+  resources:
+    - name: gke-cluster-main
+      base:
+        # API Group corrigé pour les clusters GKE Upbound
+        apiVersion: container.gcp.upbound.io/v1beta1 
+        kind: Cluster
+        spec:
+          providerConfigRef:
+            name: gcp-primary-config # Référence à votre ProviderConfig
+          forProvider:
+            # project: optionnel, fourni par le ProviderConfig; on s'appuie dessus pour éviter les conflits
+            location: europe-west1
+            releaseChannel:
+              - channel: "REGULAR" # 
+            initialNodeCount: 1 # Minimum requis
+            nodeConfig:
+              - diskType: pd-standard
+            monitoringConfig:
+              - enableComponents:
+                  - SYSTEM_COMPONENTS
+          writeConnectionSecretToRef:
+            name: ""
+            namespace: crossplane-system
+            
+      patches:
+        - fromFieldPath: spec.id
+          toFieldPath: metadata.name
+        - fromFieldPath: spec.id
+          toFieldPath: spec.writeConnectionSecretToRef.name
+        - fromFieldPath: spec.region
+          toFieldPath: spec.forProvider.location
+        
+    # Removed explicit Secret resource; rely on writeConnectionSecretToRef written by the managed resource.
